@@ -1,0 +1,27 @@
+{% from "render_field.html" import render_field %}
+
+<html>
+  <head>
+    <title>Shrt</title>
+  </head>
+  <body>
+    <center>
+      <form method="post">
+        {{ render_field(form.url) }}
+        {{ render_field(form.key) }}
+
+        <p><input type="submit" value="Create URL">
+      </form>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li>{{ message[1] }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </center>
+  </body>
+</html>

@@ -1,7 +1,11 @@
+import requests
 import json
 import re
 import shortuuid
-from flask import Flask, request, redirect
+import os
+from flask import Flask, request, redirect, render_template, flash, url_for
+from wtforms import Form, TextField, validators
+
 
 with open("redirects.json", "r") as f:
     redirects = json.load(f)
@@ -13,20 +17,29 @@ def save_redirects() -> None:
 
 
 app = Flask(__name__)
+app.secret_key = os.urandom(32)
 
 
-@app.route("/")
+class RegisterUrlForm(Form):
+    name = "Create short url"
+    url = TextField("Url", [validators.DataRequired(),
+                            validators.URL()])
+    key = TextField("Key", [validators.Length(min=0, max=16),
+                            validators.Optional()])
+
+
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return """
-        <center><h1>Welcome to shrt!<h1></center>
-        <h2>This site is under development,
-        follow these instructions to use it:</h2>
-        Access a short url <b>/somekey</b><br><br>
-        Create a short url: <b>/create?url=https://website.com</b><br><br>
-        Specify a key: <b>/create?url=https://website.com&key=somekey</b>
-        <br><br><br><h3><a href='https://s.daste.me/shrt' target='blank'>
-        See shrt on github</a></h3>
-    """
+    form = RegisterUrlForm(request.form)
+
+    if request.method == "POST" and form.validate():
+        request_url = url_for("create_url",
+                              url=form.url.data,
+                              key=form.key.data,
+                              _external=True)
+        flash(requests.get(request_url).content)
+
+    return render_template("index.html", form=form)
 
 
 @app.route("/<string:key>")
