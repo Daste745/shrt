@@ -1,4 +1,3 @@
-import requests
 import json
 import re
 import shortuuid
@@ -23,9 +22,14 @@ app.secret_key = os.urandom(32)
 class RegisterUrlForm(Form):
     name = "Create short url"
     url = TextField("Url", [validators.DataRequired(),
-                            validators.URL()])
-    key = TextField("Key", [validators.Length(min=0, max=16),
-                            validators.Optional()])
+                            validators.URL(message="Invalid URL")])
+    key = TextField("Key", [
+        validators.Length(min=0, max=16,
+                          message="Key must be 0-16 characters long"),
+        validators.Regexp(regex=r"^[a-zA-Z0-9]+$",
+                          message="Key must be only alphanumeric"),
+        validators.Optional()
+    ])
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -33,11 +37,18 @@ def index():
     form = RegisterUrlForm(request.form)
 
     if request.method == "POST" and form.validate():
-        request_url = url_for("create_url",
-                              url=form.url.data,
-                              key=form.key.data,
-                              _external=True)
-        flash(requests.get(request_url).content)
+        if not (key := form.key.data):
+            key = shortuuid.random(6)
+
+        if key in redirects.keys():
+            flash(f"key {key} is already in use ({redirects[key]})\n")
+        else:
+            url = form.url.data
+            redirects.update({key: url})
+            save_redirects()
+
+            registered_url = url_for('access_url', key=key, _external=True)
+            flash(f"registered {registered_url} -> {url}\n")
 
     return render_template("index.html", form=form)
 
@@ -48,28 +59,6 @@ def access_url(key: str):
         return f"There is no url bound to key '{key}'\n", 404
 
     return redirect(redirects[key])
-
-
-@app.route("/create")
-def create_url():
-    if not (url := request.args.get("url")):
-        return "'url' is a required parameter\n", 400
-    url_match = re.match(r"^https?:\/\/\S+$", url)
-    if not url_match:
-        return f"url '{url}' is invalid", 400
-
-    if not (key := request.args.get("key")):
-        key = shortuuid.random(6)
-    if not re.match(r"^[a-zA-Z0-9]+$", key):
-        return f"key '{key}' is invalid (only alphanumeric allowed)\n", 400
-
-    if key in redirects.keys():
-        return f"key '{key}' is already in use ({redirects[key]})\n", 400
-
-    redirects.update({key: url})
-    save_redirects()
-
-    return f"registered '{key}' -> '{url}'\n"
 
 
 if __name__ == "__main__":
