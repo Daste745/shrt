@@ -15,6 +15,20 @@ def save_redirects() -> None:
 app = Flask(__name__)
 
 
+@app.route("/")
+def index():
+    return """
+        <center><h1>Welcome to shrt!<h1></center>
+        <h2>This site is under development,
+        follow these instructions to use it:</h2>
+        Access a short url <b>/somekey</b><br><br>
+        Create a short url: <b>/create?url=https://website.com</b><br><br>
+        Specify a key: <b>/create?url=https://website.com&key=somekey</b>
+        <br><br><br><h3><a href='https://s.daste.me/shrt' target='blank'>
+        See shrt on github</a></h3>
+    """
+
+
 @app.route("/<string:key>")
 def access_url(key: str):
     if key not in redirects.keys():
