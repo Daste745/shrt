@@ -1,9 +1,8 @@
 import json
-import re
 import shortuuid
 import os
 from flask import Flask, request, redirect, render_template, flash, url_for
-from wtforms import Form, TextField, validators
+from wtforms import Form, StringField, validators
 
 
 with open("redirects.json", "r") as f:
@@ -11,8 +10,8 @@ with open("redirects.json", "r") as f:
 
 
 def save_redirects() -> None:
-    with open("redirects.json", "w") as f:
-        json.dump(redirects, f, indent=2)
+    with open("redirects.json", "w") as file:
+        json.dump(redirects, file, indent=2)
 
 
 app = Flask(__name__)
@@ -21,14 +20,16 @@ app.secret_key = os.urandom(32)
 
 class RegisterUrlForm(Form):
     name = "Create short url"
-    url = TextField("Url", [validators.DataRequired(),
-                            validators.URL(message="Invalid URL")])
-    key = TextField("Key", [
+    url = StringField("Url", [
+        validators.InputRequired(),
+        validators.URL(message="Invalid URL")
+    ])
+    key = StringField("Key", [
+        validators.Optional(),
         validators.Length(min=0, max=16,
                           message="Key must be 0-16 characters long"),
         validators.Regexp(regex=r"^[a-zA-Z0-9]+$",
-                          message="Key must be only alphanumeric"),
-        validators.Optional()
+                          message="Key must be only alphanumeric")
     ])
 
 
