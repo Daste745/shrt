@@ -21,8 +21,11 @@
     {% for message in messages %}
       <li class="message {{ message[0] }}">
       {% if message[0] == "success" %}  {# URL registered successfully #}
-        <div class="title">{{ message[1][0] }}</div>
-        <p class="created-url">{{ message[1][1] }}</p>
+        <div class="title">
+          <span>{{ message[1][0] }}</span>
+          <span class="copy-button">📋</span>
+        </div>
+          <span class="created-url">{{ message[1][1] }}</span>
       {% elif message[0] == "error" %}  {# Short URL is already in use #}
         <div class="title"><i>{{ message[1][2] }}</i> {{ message[1][0] }}</div>
         <a href="{{ message[1][1] }}">{{ clean_url(message[1][1]) }}</a>

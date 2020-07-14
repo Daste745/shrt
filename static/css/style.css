@@ -111,3 +111,23 @@ label {
 #messages .message.error {
     background-color: #cc241d;
 }
+
+.created-url {
+    overflow-wrap: break-word;
+}
+
+.copy-button {
+    cursor: pointer;
+    margin-left: .5rem;
+}
+
+.copy-button::after {
+    content: "Copy Url to Clipboard";
+    opacity: 0;
+    margin-left: .5rem;
+    transition: opacity .1s;
+}
+
+.copy-button:hover::after {
+    opacity: 1;
+}

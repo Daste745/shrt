@@ -27,11 +27,10 @@ for (let label of document.querySelectorAll("label")) {
     });
 }
 
-
-cretedUrlField = document.querySelector(".created-url");
-if (cretedUrlField) {
-    cretedUrlField.addEventListener("click", () => {
+const copyUrlButton = document.querySelector(".copy-button");
+const cretedUrlField = document.querySelector(".created-url");
+if (copyUrlButton) {
+    copyUrlButton.addEventListener("click", () => {
         navigator.clipboard.writeText(cretedUrlField.textContent);
-        // TODO: Show popup message "copied to clipboard"
     });
 }
