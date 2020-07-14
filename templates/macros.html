@@ -8,7 +8,10 @@
 {% macro render_field_messages(field) %}
   {% if field.errors %}
     {% for error in field.errors %}
-      <li class="error">{{ error }}</li>
+      <li class="message error">
+        <div class="title">Invalid {{ field.label.text }}</div>
+        <p>{{ error }}</p>
+      </li>
     {% endfor %}
   {% endif %}
 {% endmacro %}
@@ -16,10 +19,10 @@
 {% macro render_messages(messages) %}
   {% if messages %}
     {% for message in messages %}
-      <li class="{{ message[0] }}">
+      <li class="message {{ message[0] }}">
       {% if message[0] == "success" %}  {# URL registered successfully #}
         <div class="title">{{ message[1][0] }}</div>
-        <textarea class="copy-url" rows="1" readonly>{{ message[1][1] }}</textarea>
+        <p class="created-url">{{ message[1][1] }}</p>
       {% elif message[0] == "error" %}  {# Short URL is already in use #}
         <div class="title"><i>{{ message[1][2] }}</i> {{ message[1][0] }}</div>
         <a href="{{ message[1][1] }}">{{ clean_url(message[1][1]) }}</a>

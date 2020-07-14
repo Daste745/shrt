@@ -24,12 +24,10 @@ for (let label of labels) {
 document.querySelector("#key")
     .setAttribute("maxlength", "16");
 
-copyUrlField = document.querySelector(".copy-url");
-if (copyUrlField) {
-    copyUrlField.addEventListener("click", () => {
-        copyUrlField.select();
-        document.execCommand("copy");
-        // window.getSelection().removeAllRanges();
+cretedUrlField = document.querySelector(".created-url");
+if (cretedUrlField) {
+    cretedUrlField.addEventListener("click", () => {
+        navigator.clipboard.writeText(cretedUrlField.textContent);
         // TODO: Show popup message "copied to clipboard"
     });
 }

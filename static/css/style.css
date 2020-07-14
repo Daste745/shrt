@@ -92,30 +92,21 @@ label {
     color: #fabd2f;
 }
 
-#messages li {
+#messages .message {
     padding: .75rem;
     margin-bottom: .5rem;
     border: 1.5px solid #504945;
     border-radius: 10px;
 }
 
-#messages li .title {
+#messages .message .title {
     font-size: .8rem;
 }
 
-.success, .success textarea {
+#messages .message.success {
     background-color: #689d6a;
 }
 
-.success textarea {
-    font-family: inherit;
-    font-size: 1rem;
-    color: inherit;
-    border: none;
-    resize: none;
-    outline: none;
-}
-
-.error {
+#messages .message.error {
     background-color: #cc241d;
 }
