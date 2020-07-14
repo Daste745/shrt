@@ -22,14 +22,14 @@ class RegisterUrlForm(Form):
     name = "Create short url"
     url = StringField("Url", [
         validators.InputRequired(),
-        validators.URL(message="Invalid URL")
+        validators.URL(message="Invalid URL, \"http(s)://\" is required")
     ])
     key = StringField("Short Url", [
         validators.Optional(),
         validators.Length(min=0, max=16,
-                          message="Key must be 0-16 characters long"),
+                          message="Max allowed lenght is 16"),
         validators.Regexp(regex=r"^[a-zA-Z0-9]+$",
-                          message="Key must be only alphanumeric")
+                          message="Allowed characters: a-Z, A-Z, 0.9")
     ])
 
 
