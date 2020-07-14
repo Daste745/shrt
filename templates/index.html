@@ -1,30 +1,39 @@
 <!DOCTYPE html>
-{% from "render_field.html" import render_field %}
 
 <html lang="en">
   <head>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
-          rel="stylesheet">
     <title>Shrt</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap">
+
+    <script src="{{ url_for('static', filename='js/index.js') }}" defer></script>
+
+    {% from "macros.html" import input_field, render_field_messages, render_messages %}
   </head>
   <body>
-    <center>
-      <form method="post">
-        {{ render_field(form.url) }}
-        {{ render_field(form.key) }}
+    <main>
+      <header>
+        shrt
+      </header>
 
-        <p><input type="submit" value="Create URL">
+      <form method="post">
+        {{ input_field(form.url) }}
+        {{ input_field(form.key) }}
+
+        <input type="submit" value="Create URL">
       </form>
 
       {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          <ul>
-            {% for message in messages %}
-            <li>{{ message[1] }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
+      <ul id="messages">
+        {{ render_field_messages(form.url) }}
+        {{ render_field_messages(form.key) }}
+
+        {{ render_messages(messages) }}
+      </ul>
       {% endwith %}
-    </center>
+    </main>
   </body>
 </html>

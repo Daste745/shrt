@@ -1,0 +1,34 @@
+{% macro input_field(field) %}
+  <div class="input-field">
+    {{ field|safe }}
+    {{ field.label }}
+  </div>
+{% endmacro %}
+
+{% macro render_field_messages(field) %}
+  {% if field.errors %}
+    {% for error in field.errors %}
+      <li class="error">{{ error }}</li>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
+{% macro render_messages(messages) %}
+  {% if messages %}
+    {% for message in messages %}
+      <li class="{{ message[0] }}">
+      {% if message[0] == "success" %}  {# URL registered successfully #}
+        <div class="title">{{ message[1][0] }}</div>
+        <textarea class="copy-url" rows="1" readonly>{{ message[1][1] }}</textarea>
+      {% elif message[0] == "error" %}  {# Short URL is already in use #}
+        <div class="title"><i>{{ message[1][2] }}</i> {{ message[1][0] }}</div>
+        <a href="{{ message[1][1] }}">{{ clean_url(message[1][1]) }}</a>
+      {% endif %}
+      </li>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
+{% macro clean_url(url) %}
+  {{ url[url.find(":") + 3:].strip() }}
+{% endmacro %}

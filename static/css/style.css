@@ -1,0 +1,121 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 20px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #282828;
+    color: #ebdbb2;
+}
+
+header {
+    text-align: center;
+    font-size: 3rem;
+}
+
+form {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    width: 100%;
+    font-size: 1rem;
+    color: inherit;
+    background-color: #3c3836;
+    border: 1.5px solid #504945;
+    border-radius: 10px;
+    transition: border-color .2s;
+}
+
+input[type=text] {
+    padding: 1rem .5rem .5rem;
+}
+
+input[type=submit] {
+    cursor: pointer;
+    padding: .75rem;
+    margin-bottom: 2rem;
+    color: inherit;
+    transition: background-color .2s;
+}
+
+input[type=submit]:hover {
+    background-color: #665c54;
+}
+
+input:focus {
+    border-color: #458588;
+    outline: none;
+}
+
+input:focus + label,label.label-active {
+    transform: translate(.5rem, .25rem);
+    font-size: .7rem;
+    color: #a89984;
+}
+
+.input-field {
+    position: relative;
+    margin-bottom: .5rem;
+}
+
+label {
+    user-select: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(.5rem, .75rem);
+    transition: transform .1s, font-size .1s, color .1s;
+    cursor: text;
+}
+
+#messages {
+    width: 320px;
+    list-style: none;
+}
+
+#messages a, #messages a:visited {
+    color: #fabd2f;
+}
+
+#messages li {
+    padding: .75rem;
+    margin-bottom: .5rem;
+    border: 1.5px solid #504945;
+    border-radius: 10px;
+}
+
+#messages li .title {
+    font-size: .8rem;
+}
+
+.message, .message textarea {
+    background-color: #689d6a;
+}
+
+.message textarea {
+    font-family: inherit;
+    font-size: 1rem;
+    color: inherit;
+    border: none;
+    resize: none;
+    outline: none;
+}
+
+.error {
+    background-color: #cc241d;
+}

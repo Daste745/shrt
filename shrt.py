@@ -24,7 +24,7 @@ class RegisterUrlForm(Form):
         validators.InputRequired(),
         validators.URL(message="Invalid URL")
     ])
-    key = StringField("Key", [
+    key = StringField("Short Url", [
         validators.Optional(),
         validators.Length(min=0, max=16,
                           message="Key must be 0-16 characters long"),
@@ -42,14 +42,14 @@ def index():
             key = shortuuid.random(6)
 
         if key in redirects.keys():
-            flash(f"key {key} is already in use ({redirects[key]})\n")
+            flash((f"is already in use", redirects[key], key), "error")
         else:
             url = form.url.data
             redirects.update({key: url})
             save_redirects()
 
             registered_url = url_for('access_url', key=key, _external=True)
-            flash(f"registered {registered_url} -> {url}\n")
+            flash((f"Created short url", registered_url), "success")
 
     return render_template("index.html", form=form)
 
