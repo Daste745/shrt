@@ -1,4 +1,8 @@
-const labels = document.querySelectorAll("label");
+// Assign a maxlength attribute to the "key" field
+// Wtforms doesn't automatically add the maxlength attribute
+document.querySelector("#key")
+    .setAttribute("maxlength", "16");
+
 
 function checkActive(inputField, label) {
     if (inputField.value.length > 0) {
@@ -8,21 +12,21 @@ function checkActive(inputField, label) {
     }
 }
 
-for (let label of labels) {
-    let labelFor = label.getAttribute("for");
+for (let label of document.querySelectorAll("label")) {
+    const labelFor = label.getAttribute("for");
     const inputField = document.querySelector(`#${labelFor}`);
 
     inputField.setAttribute("autocomplete", "off")
 
+    // Check once when loading the page in case of the inputs being already
+    // full (form resubmittion)
     checkActive(inputField, label);
+
     inputField.addEventListener("keyup", () => {
         checkActive(inputField, label);
     });
 }
 
-// Assign a maxlength attribute to the "key" field
-document.querySelector("#key")
-    .setAttribute("maxlength", "16");
 
 cretedUrlField = document.querySelector(".created-url");
 if (cretedUrlField) {
@@ -31,5 +35,3 @@ if (cretedUrlField) {
         // TODO: Show popup message "copied to clipboard"
     });
 }
-
-// TODO: Clean this script up
