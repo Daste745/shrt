@@ -103,11 +103,11 @@ label {
     font-size: .8rem;
 }
 
-.message, .message textarea {
+.success, .success textarea {
     background-color: #689d6a;
 }
 
-.message textarea {
+.success textarea {
     font-family: inherit;
     font-size: 1rem;
     color: inherit;
