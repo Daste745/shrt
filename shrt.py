@@ -20,17 +20,23 @@ app.secret_key = os.urandom(32)
 
 class RegisterUrlForm(Form):
     name = "Create short url"
-    url = StringField("Url", [
-        validators.InputRequired(),
-        validators.URL(message="Invalid URL, \"http(s)://\" is required")
-    ])
-    key = StringField("Short Url", [
-        validators.Optional(),
-        validators.Length(min=0, max=16,
-                          message="Max allowed lenght is 16"),
-        validators.Regexp(regex=r"^[a-zA-Z0-9]+$",
-                          message="Allowed characters: a-Z, A-Z, 0.9")
-    ])
+    url = StringField(
+        "Url",
+        [
+            validators.InputRequired(),
+            validators.URL(message='Invalid URL, "http(s)://" is required'),
+        ],
+    )
+    key = StringField(
+        "Short Url",
+        [
+            validators.Optional(),
+            validators.Length(min=0, max=16, message="Max allowed lenght is 16"),
+            validators.Regexp(
+                regex=r"^[a-zA-Z0-9]+$", message="Allowed characters: a-Z, A-Z, 0.9"
+            ),
+        ],
+    )
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -48,7 +54,7 @@ def index():
             redirects.update({key: url})
             save_redirects()
 
-            registered_url = url_for('access_url', key=key, _external=True)
+            registered_url = url_for("access_url", key=key, _external=True)
             flash((f"Created short url", registered_url), "success")
 
     return render_template("index.html", form=form)
@@ -64,4 +70,3 @@ def access_url(key: str):
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)
-
