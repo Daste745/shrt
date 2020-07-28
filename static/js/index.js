@@ -28,9 +28,14 @@ for (let label of document.querySelectorAll("label")) {
 }
 
 const copyUrlButton = document.querySelector(".copy-button");
-const cretedUrlField = document.querySelector(".created-url");
+const createdUrlField = document.querySelector(".created-url");
 if (copyUrlButton) {
     copyUrlButton.addEventListener("click", () => {
-        navigator.clipboard.writeText(cretedUrlField.textContent);
+        navigator.clipboard.writeText(createdUrlField.textContent).then(() => {
+            document.styleSheets[0].addRule(
+                ".copy-button::after",
+                "content: 'Copied to Clipboard!'"
+            );
+        });
     });
 }
