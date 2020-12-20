@@ -79,7 +79,16 @@ def access_url(key: str):
     if not (registered := Redirect.query.filter(Redirect.key == key).first()):
         return f"There is no url bound to key '{key}'\n", 404
 
-    return redirect(registered.url)
+    response = redirect(registered.url)
+    response.headers.add(
+        "Referer",
+        url_for(
+            "access_url",
+            key=registered.key,
+            _external=True,
+        ),
+    )
+    return response
 
 
 if __name__ == "__main__":
